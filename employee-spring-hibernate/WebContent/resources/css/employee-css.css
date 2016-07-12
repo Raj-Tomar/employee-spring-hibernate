@@ -32,3 +32,14 @@ body {
 a, a:AFTER {
 	color: blue;
 }
+
+em{
+	color: red;
+}
+.errorAndSuccessMessage{
+	text-align: center;
+	color: #ff0000;
+}
+.errorMessage{
+	display: none;
+}

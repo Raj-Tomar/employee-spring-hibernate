@@ -12,6 +12,7 @@
   <link href="<c:url value="/resources/css/employee-css.css"/>" rel="stylesheet" type="text/css">
 	  
   <script type="text/javascript" src="<c:url value="/resources/js/jquery-3.0.0.js"/>"></script>
+  <script type="text/javascript" src="<c:url value="/resources/js/employee-validation.js"/>"></script>
   
  </head>
  <body>
@@ -24,39 +25,53 @@
  	<h2>Update Employee</h2>
  </c:if>
   
-  <c:url var="employeeAction" value ="/saveOrUpdateEmployee"/>
+  <div class="errorAndSuccessMessage">
+	<label class="errorMessage" id="firstNameMissing">Please enter first name.</label>
+	<label class="errorMessage" id="firstNameInvalid">Please enter valid first name.</label>
+	<label class="errorMessage" id="lastNameInvalid">Please enter valid last name.</label>
+	<label class="errorMessage" id="designationMissing">Please enter designation.</label>
+	<label class="errorMessage" id="designationInvalid">Please enter valid designation.</label>
+	<label class="errorMessage" id="companyNameMissing">Please enter company name.</label>
+	<label class="errorMessage" id="companyNameInvalid">Please enter valid company name.</label>
+  </div>
+  
+  <div>
+  	<c:url var="employeeAction" value ="/saveOrUpdateEmployee"/>
   <form:form method="POST" action="${employeeAction}" commandName="employee">
       <table align="center">
       <c:if test="${!empty employee.id}">
        <tr>
            <td><form:label path="id">Employee ID:</form:label></td>
-           <td><form:input path="id" readonly="true"/></td>
+           <td><form:input path="id" readonly="true" id="employeeId"/></td>
        </tr>
        </c:if>
        <tr>
-           <td><form:label path="firstName">First Name:</form:label></td>
-           <td><form:input path="firstName"/></td>
+           <td><form:label path="firstName"><em>*</em>First Name:</form:label></td>
+           <td><form:input path="firstName" id="firstName"/></td>
        </tr>
        <tr>
            <td><form:label path="lastName">Last Name:</form:label></td>
-           <td><form:input path="lastName" /></td>
+           <td><form:input path="lastName" id="lastName"/></td>
        </tr>
        <tr>
-           <td><form:label path="designation">Designation:</form:label></td>
-           <td><form:input path="designation" /></td>
+           <td><form:label path="designation"><em>*</em>Designation:</form:label></td>
+           <td><form:input path="designation" id="designation"/></td>
        </tr>
        
        <tr>
-           <td><form:label path="companyName">Company:</form:label></td>
-                    <td><form:input path="companyName"/></td>
+           <td><form:label path="companyName"><em>*</em>Company Name:</form:label></td>
+           <td><form:input path="companyName" id="companyName"/></td>
        </tr>
           <tr>
-          <c:if test="${empty employee.id}">
-          	<td colspan="2"><input type="submit" value="Submit" id="addEmployee"/></td>
-          </c:if>
-          <c:if test="${!empty employee.id}">
-          	<td colspan="2"><input type="submit" value="Update" id="updateEmployee"/></td>
-          </c:if>
+          	<td colspan="2">	
+          	<c:if test="${empty employee.id}">
+          		<input type="submit" value="Submit" id="addEmployee"/>
+          	</c:if>
+          	<c:if test="${!empty employee.id}">
+          		<input type="submit" value="Update" id="updateEmployee"/>
+          	</c:if>
+          	<input type="button" value="Clear" id="clearEmployee"/>
+          </td>
         </tr>
    </table> 
   </form:form>
@@ -85,11 +100,17 @@
   </c:forEach>
  </table>
 </c:if>
+ </div>
+  
 </div>
 
 <script type="text/javascript">
 $(document).ready(function(){
-
+	Employee.validateEmployee();
+	$('#clearEmployee').click(function(){
+		Employee.clearEmployeeForm();
+		Employee.hideAllMessage();
+	});
 });
 
 </script>
